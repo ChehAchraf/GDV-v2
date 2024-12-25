@@ -3,17 +3,19 @@ class User {
     protected $nom;
     protected $prenom;
     protected $password;
+    protected $email;
     protected $role;
 
-    public function __construct($nom, $prenom, $password, $role = 'client') {
+    public function __construct($nom, $prenom, $password,$email, $role = 'client') {
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->password = $password;
+        $this->email = $email;
         $this->role = $role;
     }
 
     public function login($pdo) {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE nom = :nom AND prenom = :prenom");
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE nom = :nom AND prenom = :prenom");
         $stmt->execute(['nom' => $this->nom, 'prenom' => $this->prenom]);
         $user = $stmt->fetch();
 
@@ -24,7 +26,7 @@ class User {
     }
 
     public function register($pdo) {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE nom = :nom AND prenom = :prenom");
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE nom = :nom AND prenom = :prenom");
         $stmt->execute(['nom' => $this->nom, 'prenom' => $this->prenom]);
         $user = $stmt->fetch();
 
@@ -33,11 +35,12 @@ class User {
         }
 
         $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare("INSERT INTO users (nom, prenom, password, role) VALUES (:nom, :prenom, :password, :role)");
+        $stmt = $pdo->prepare("INSERT INTO utilisateurs (nom, prenom, mot_de_passe,email, role) VALUES (:nom, :prenom, :password, :email , :role)");
         $stmt->execute([
             'nom' => $this->nom,
             'prenom' => $this->prenom,
             'password' => $hashedPassword,
+            'email' => $this->email,
             'role' => $this->role
         ]);
 
