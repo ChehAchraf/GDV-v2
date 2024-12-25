@@ -2,6 +2,8 @@
 
 require_once('./app/classes/DB.php');
 
-$con = new Database();
+$pdo = new Database();
 
-var_dump($con) ;
+
+
+
