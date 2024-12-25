@@ -97,7 +97,7 @@
             </div>
             <div class="w-[90%] md:w-[40%] flex flex-col gap-8">
                     <p class="text-[#757575] text-center text-[40px]  ">Login</p>
-                    <form action="../backend/actionsPHP/login.php" method="post" class="flex flex-col gap-4" >
+                    <form action="../app/helpers/login.php" method="post" class="flex flex-col gap-4" >
                         <div class="flex flex-col gap-2">
                         <label for="email-login text-xl">Email</label>
                         <input id="email-login" name="email-login" type="text" class='border pl-4 py-2' placeholder="Enter your email...">

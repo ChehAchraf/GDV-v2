@@ -15,12 +15,14 @@ class User {
     }
 
     public function login($pdo) {
-        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE nom = :nom AND prenom = :prenom");
-        $stmt->execute(['nom' => $this->nom, 'prenom' => $this->prenom]);
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email ");
+        $stmt->execute(['email' => $this->email]);
         $user = $stmt->fetch();
 
-        if ($user && password_verify($this->password, $user['password'])) {
-            return "Login successful! Welcome, {$this->nom} {$this->prenom}";
+        if ($user && password_verify($this->password, $user['mot_de_passe'])) {
+            session_start();
+            $_SESSION['user_role'] = $user['role'];
+            return "Login successful! Welcome, " . $user['nom'] . " and the session role is " . $_SESSION['user_role'];
         }
         return "Invalid username or password";
     }
