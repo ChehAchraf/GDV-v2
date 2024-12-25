@@ -8,7 +8,7 @@ class Reservation {
     private $nbrPersonnes;
     private $statut;
 
-    public function __construct($idClient, $idActivite, $statut = 'En Attente',$nbrPersonnes) {
+    public function __construct($idClient, $idActivite, $nbrPersonnes,$statut = 'En Attente') {
         $this->idClient = $idClient;
         $this->idActivite = $idActivite;
         $this->statut = $statut;

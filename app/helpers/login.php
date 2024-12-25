@@ -1,6 +1,7 @@
 <?php 
 require_once('../classes/User.php');
 require_once('../classes/DB.php');
+
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     if(isset($_POST['email-login']) && isset($_POST['password-login'])){
 
@@ -16,6 +17,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $user = new User('', '', $password, $email); 
         $result = $user->login($pdo);
         if($result){
+           
             header("Location: ../../public/admin/index.php");
         }
         
