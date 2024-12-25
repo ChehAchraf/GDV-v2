@@ -31,7 +31,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #9c7e54;
+            background: #5051FA;
             transition: width 0.3s ease;
         }
 
@@ -44,7 +44,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#9c7e54',
+                        primary: '#5051FA',
                         borderColor: '#5f5d5d',
                         bgcolor: '#F3F3F3',
                     },
@@ -62,7 +62,6 @@
 
 <body class="w-full h-full min-h-screen text-white font-primary ">
     <?php include 'header.php';
-        $allMenu = $con ->query('SELECT * from menu');
 
     ?>
     <section class="flex flex-col w-full h-full p-4 md:p-32 items-center justify-center text-black">

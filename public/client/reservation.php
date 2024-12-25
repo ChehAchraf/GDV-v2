@@ -1,9 +1,11 @@
 <?php
 session_start();
-if(!isset($_SESSION['id_logged']))
-{
-    header('Location: /Gestion Restaurant/frontend/index.php');
-}
+// if(!isset($_SESSION['id_logged']))
+// {
+//     header('Location: /Gestion Restaurant/frontend/index.php');
+// }
+require_once ('../../app/helpers/getAllReservations.php');
+$reservations = getAllReservations::getAllReservations();
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +44,7 @@ if(!isset($_SESSION['id_logged']))
             left: 0;
             width: 0;
             height: 2px;
-            background: #9c7e54;
+            background: #5051FA;
             transition: width 0.3s ease;
         }
 
@@ -57,7 +59,7 @@ if(!isset($_SESSION['id_logged']))
             theme: {
             extend: {
                 colors: {
-                primary: '#9c7e54',
+                primary: '#5051FA',
                 borderColor: '#5f5d5d',
                 bgcolor: '#F3F3F3',
                 },
@@ -74,8 +76,7 @@ if(!isset($_SESSION['id_logged']))
 </head>
 <body class="w-full h-full min-h-screen text-white font-primary ">
     <?php include 'header.php'; 
-        $allMenu = $con ->query('SELECT * from menu');
-        $allReservations = $con->query("SELECT * from reservation where id_client = " .$_SESSION['id_logged']." ");
+       
         
     ?>
     <section class="bg-bgcolor py-16 px-8 text-black">
@@ -87,49 +88,51 @@ if(!isset($_SESSION['id_logged']))
         <!-- Reservation Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 ">
 
-            <?php
-                if($allReservations->num_rows > 0){
-                    foreach($allReservations as $reservation)
+            	<?php
+                    if($reservations)
                     {
-                        $reservationDate[] = $reservation['date_reservation'];
-                        $reservationHeure[] = $reservation['heure_reservation'];
+                        foreach($reservations as $res)
+                        echo "
+                     <div class='bg-white rounded-lg shadow-lg p-6'>
+                                <h3 class='text-xl font-bold text-primary mb-4'>Reservation 1</h3>
+                                <ul class='text-gray-700'>
+                                    <li><span class='font-bold'>Activite:</span> ".$res['id_activite']."</li>
+                                    <li><span class='font-bold'>Description:</span> XXXXXXX</li>
+                                    <li><span class='font-bold'>Nombre de Personnes:</span> 20</li>
+                                    <li><span class='font-bold'>Date Reservation:</span> 000-00-0-0</li>
+                                    <li><span class='font-bold'>Date Activite:</span> 000-00-00</li>
+                                    <li><span class='font-bold'>Staus:</span> Canceled</li>
 
-                        echo "<div class='bg-white rounded-lg shadow-lg p-6'>
-                <h3 class='text-xl font-bold text-primary mb-4'>Reservation 1</h3>
-                <ul class='text-gray-700'>
-                    <li><span class='font-bold'>Adresse:</span> ".$reservation['addresse_reservation']."</li>
-                    <li><span class='font-bold'>Nombre de Personnes:</span> ".$reservation['nbr_personnes']."</li>
-                    <li><span class='font-bold'>Date:</span> ".$reservation['date_reservation']."</li>
-                    <li><span class='font-bold'>Heure:</span> ".$reservation['heure_reservation']."</li>
-                    <li><span class='font-bold'>Staus:</span> ".$reservation['status']."</li>
+                                </ul>
+                                <div class='flex justify-center gap-2'>
+                                <form class='cancel-form' action='../../backend/actionsPHP/reservation/updateStatus.php' method='POST' >
+                                        <input type='hidden' name='res-id' value=".$res['id_reservation'].">
+                                        <input type='hidden' name='new-status' value='Canceled'>
+                                            <input type='hidden' name='action' value='confirm'>
+                                        
+                                    
+                                    
+                                <button name='confirm' class='mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-[#826642] transition duration-300'>
+                                    Cancel Reservation
+                                </button>
+                                </form>
+                                
+                                        <input type='hidden' name='res-id' value=".$res['id_reservation'].">   
+                                        <button name='edit_reservation'      class='mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-[#826642] transition duration-300'>
+                                            Edit Reservation
+                                        </button>
+                            
+                                        </div>        
+                            </div>";
 
-                </ul>
-                <div class='flex justify-center gap-2'>
-                <form class='cancel-form' action='../../backend/actionsPHP/reservation/updateStatus.php' method='POST' >
-                        <input type='hidden' name='res-id' value=".$reservation['id'].">
-                        <input type='hidden' name='new-status' value='Canceled'>
-                            <input type='hidden' name='action' value='confirm'>
-";
-                        
-                        if($reservation['status'] !== 'Canceled')
-                        {echo "
-                <button name='confirm' class='mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-[#826642] transition duration-300'>
-                    Cancel Reservation
-                </button>";}
-                echo "</form>
-                
-                        <input type='hidden' name='res-id' value=".$reservation['id'].">   
-                        <button name='edit_reservation' onclick=\"openEditModal('".$reservation['id']."', '".$reservation['id_menu']."', '".$reservation['heure_reservation']."', '".$reservation['date_reservation']."', '".$reservation['nbr_personnes']."', '".$reservation['addresse_reservation']."')\" class='mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-[#826642] transition duration-300'>
-                            Edit Reservation
-                        </button>
-              
-                         </div>        
-            </div>";
+                    } else 
+                    {
+                        echo "  <p class='text-center w-full '> You don't have any reservation</p>";
                     }
-                } else{
-                    echo "<p class='text-center w-full '> You don't have any reservation</p>";
-                }
-            ?>
+                ?>
+              
+            
+            
 
           
 
@@ -150,28 +153,18 @@ if(!isset($_SESSION['id_logged']))
     <div id="reservationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white rounded-lg p-8 shadow-lg w-[90%] md:w-[50%]">
             <h3 class="text-2xl font-bold text-primary mb-6">New Reservation</h3>
-            <form id="reservation-form" action="../../backend/actionsPHP/reservation/add.php" method="POST">
+            <form id="reservation-form" action="../../app/helpers/addReservation.php" method="POST">
     <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Menu</label>
-        <select name="menu-select" id="menu-select" class="w-full border border-gray-300 text-gray-600 rounded-md p-2 focus:ring-primary focus:border-primary">
-            <option value="" checked>Choose a menu</option>
-            <?php
-            foreach ($allMenu as $menu) {
-                echo "<option value='" . $menu['id'] . "'>" . $menu['titre'] . "</option>";
-            }
-            ?>
+        <label class="block font-bold text-gray-700 mb-2">Activite</label>
+        
+        <select name="activite-select" id="activite-select" class=" w-full border border-gray-300 text-gray-600 rounded-md p-2 focus:ring-primary focus:border-primary">
+            <option value="" checked>Choose an Activity</option>
+      
+                <option value='1'>Activtiy 1 (Vol)</option>
+           
         </select>
     </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Adresse</label>
-        <input 
-            name="adresse-reservation"
-            id="adresse-reservation"
-            type="text" 
-            class="w-full border border-gray-300 rounded-md p-2 focus:ring-primary focus:border-primary"
-            placeholder="Enter Address"
-        >
-    </div>
+   
     <div class="mb-4">
         <label class="block font-bold text-gray-700 mb-2">Nombre de Personnes</label>
         <input 
@@ -182,24 +175,7 @@ if(!isset($_SESSION['id_logged']))
             placeholder="Enter Number of People"
         >
     </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Date</label>
-        <input 
-            name="date-reservation"
-            id="date-reservation"
-            type="date" 
-            class="w-full border border-gray-300 rounded-md p-2 text-gray-600 focus:ring-primary focus:border-primary"
-        >
-    </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Heure</label>
-        <input 
-            name="heure-reservation"
-            id="heure-reservation"
-            type="time" 
-            class="w-full border border-gray-300 rounded-md text-gray-600 p-2 focus:ring-primary focus:border-primary"
-        >
-    </div>
+   
     <div class="flex justify-end space-x-4">
         <button 
             type="button" 

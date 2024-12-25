@@ -1,5 +1,6 @@
 <?php
 class User {
+    protected $id;
     protected $nom;
     protected $prenom;
     protected $password;
@@ -21,6 +22,8 @@ class User {
 
         if ($user && password_verify($this->password, $user['mot_de_passe'])) {
             session_start();
+            
+            $_SESSION['id'] = $user['id_utilisateur'];
             $_SESSION['user_role'] = $user['role'];
             return "Login successful! Welcome, " . $user['nom'] . " and the session role is " . $_SESSION['user_role'];
         }
