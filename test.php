@@ -15,7 +15,7 @@ echo "<br>";
 echo $user1->register($pdo);
 $superAdmin = new SuperAdmin("adminName", "adminSurname", "adminPassword123", "admin@example.com");
 echo "<br>";
-echo $superAdmin->createAdmin($pdo, "test", "ok", "dd", "admin1@dd.com","admin");
+echo $superAdmin->createSuperAdmin($pdo, "ilyas1", "ok", "dd", "ilya1s@dd.com");
 echo "<br>";
 $admin = new Admin("normaladmin","test","hhh","123");
 echo $admin->createAdmin($pdo,"achraf","chehboun","password","ashrafchehboun@gmail.com");
