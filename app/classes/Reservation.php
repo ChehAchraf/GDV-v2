@@ -8,10 +8,11 @@ class Reservation {
     private $nbrPersonnes;
     private $statut;
 
-    public function __construct($idClient, $idActivite, $statut = 'En Attente') {
+    public function __construct($idClient, $idActivite, $statut = 'En Attente',$nbrPersonnes) {
         $this->idClient = $idClient;
         $this->idActivite = $idActivite;
         $this->statut = $statut;
+        $this->nbrPersonnes = $nbrPersonnes;
     }
 
     public function creerReservation($pdo) {

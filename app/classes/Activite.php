@@ -84,6 +84,16 @@ class Activite {
             return "Couldn't Fetch Activity: " . $e->getMessage();
         }
     }
+    
+    static function getActiviteByType($pdo, $type) {
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM `activites` WHERE `type` = :type");
+            $stmt->execute(['type' => $type]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return "Couldn't Fetch Activity: " . $e->getMessage();
+        }
+    }
 
     static function deleteActivite($pdo, $id) {
         try {
