@@ -55,7 +55,7 @@ if(isset($_SESSION['id_logged']))
             theme: {
             extend: {
                 colors: {
-                primary: '#9c7e54',
+                primary: '#5051FA',
                 borderColor: '#5f5d5d',
                 bgcolor: '#F3F3F3',
                 },
@@ -71,16 +71,16 @@ if(isset($_SESSION['id_logged']))
         </script>
 </head>
 <body class="w-full h-full min-h-screen text-white font-primary ">
-<header class="bg-[url('image/bg22.png')] bg-cover h-[40%] bg-no-repeat object-fit  " >
+<header class="bg-[url('image/back2.png')] bg-cover h-[40%] bg-no-repeat object-fit  " >
         <nav class="w-full h-[40%] sticky  flex overflow-hidden items-center justify-around">
             <div class="h-full flex items-center h-full ">
                 <img class="w-28 h-16 " src="image/logo2.png" alt="">
             </div>
       
             <ul class="md:flex justify-center w-[30%]  justify-around text-lg font-bold tracking-widest">
-                    <li ><a class="nav-items hover:text-[#9c7e54] hover:font-bold" href="home.php">Home</a></li>
-                    <li><a class="nav-items hover:text-[#9c7e54] hover:font-bold "  href="menu.php">Menu</a></li>
-                    <li><a class="nav-items hover:text-[#9c7e54] hover:font-bold"  href="contact.php">Contact</a></li>
+                    <li ><a class="nav-items hover:text-[#5051FA] hover:font-bold" href="./client/home.php">Home</a></li>
+                    <li><a class="nav-items hover:text-[#5051FA] hover:font-bold "  href="./client/activite.php">Activities</a></li>
+                    <li><a class="nav-items hover:text-[#5051FA] hover:font-bold"  href="./client/contact.php">Contact</a></li>
                     <?php
                         if(isset($_SESSION['id_logged'])){
                         echo "<li><a href='reservation.php'>My&nbsp;Reservations</a></li>";
@@ -99,7 +99,7 @@ if(isset($_SESSION['id_logged']))
     </header>
     <section class="flex flex-col md:flex-row w-full h-full p-4 md:p-32 items-center justify-around text-black">
             <div class=" flex w-[90%] md:w-[40%]">
-                <img class="w-[100%] rounded-tr-3xl rounded-tl-full rounded-bl-full rounded-br-full " src="image/image.webp" alt="">
+                <img class="w-[100%] rounded-tr-3xl rounded-tl-full rounded-bl-full rounded-br-full " src="image/image 2.webp" alt="">
                      
             </div>
             <div class="w-[90%] md:w-[40%] flex flex-col gap-8">

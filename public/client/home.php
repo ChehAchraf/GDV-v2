@@ -34,7 +34,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #9c7e54;
+            background: #5051FA;
             transition: width 0.3s ease;
         }
 
@@ -49,7 +49,7 @@
             theme: {
             extend: {
                 colors: {
-                primary: '#9c7e54',
+                primary: '#5051FA',
                 borderColor: '#5f5d5d',
                 bgcolor: '#F3F3F3',
                 },
@@ -66,12 +66,11 @@
 </head>
 <body class="w-full h-full min-h-screen text-white font-primary ">
     <?php include 'header.php';
-    $allMenu = $con ->query('SELECT * from menu');
     ?>
 
     <section class="flex flex-col md:flex-row w-full h-full p-4 md:p-32  items-center justify-center text-black">
             <div class=" flex ">
-                <img class=" w-[90%] rounded-tl-3xl rounded-tr-full rounded-bl-full rounded-br-full " src="../image/bg.jpeg" alt="">
+                <img class=" w-[90%] rounded-tl-3xl rounded-tr-full rounded-bl-full rounded-br-full " src="../image/img1.jpg" alt="">
                 <!-- <img class="w-[40%] rounded-tr-3xl rounded-tl-full rounded-bl-full rounded-br-full " src="../image/image.webp" alt=""> -->
                      
             </div>
@@ -93,10 +92,10 @@
     <section class="text-black w-full px-4 pb-4  md:px-32 md:pb-32 flex gap-4 flex-col h-full items-center justify-center">
         <div class="flex gap-2">
             <img src="../image/left-shape.svg" alt="">
-            <h2> Our Menu</h2>
+            <h2> Our Activities</h2>
             <img src="../image/right-shape.svg" alt="">
         </div>
-        <p class="text-[40px]">Delicious <span class="text-primary font-bold">Dishes</span></p>
+        <p class="text-[40px]">Most Visited <span class="text-primary font-bold">Destination</span></p>
         <div class="flex h-[100%] md:gap-8">
             <div class="flex flex-col gap-4 justufy-around h-auto h-[100%] w-[100%] md:w-[50%]">
                     <?php
@@ -130,10 +129,10 @@
                     
             </div>
             <div class=" hidden md:flex flex-wrap w-[90%] md:w-[60%] gap-4">
-                    <img class="w-[50%] h-64 rounded-t-full rounded-bl-full" src="../image/plat.jpg" alt="">
-                    <img class="w-[40%] h-64 rounded-t-full rounded-br-full" src="../image/plat.jpg" alt="">
-                    <img class="w-[50%] h-64 rounded-b-full rounded-tl-full" src="../image/plat.jpg" alt="">
-                    <img  class="w-[40%] h-64 rounded-b-full rounded-tr-full"src="../image/plat.jpg" alt="">
+                    <img class="w-[50%] h-64 rounded-t-full rounded-bl-full" src="../image/img2.jpg" alt="">
+                    <img class="w-[40%] h-64 rounded-t-full rounded-br-full" src="../image/img2.jpg" alt="">
+                    <img class="w-[50%] h-64 rounded-b-full rounded-tl-full" src="../image/img2.jpg" alt="">
+                    <img  class="w-[40%] h-64 rounded-b-full rounded-tr-full"src="../image/img2.jpg" alt="">
             </div>
 
         </div>
@@ -181,7 +180,7 @@
             <img src="../image/right-shape.svg" alt="">
         </div>
         <p class="text-[40px]">Try Our <span class="text-primary font-bold">Experience</span> now!</p>
-        <button class="px-4 py-2 bg-primary rounded-xl hover:bg-transparent hover:border hover:text-primary">Book Now</button>
+        <button class="px-4 py-2 bg-primary text-white rounded-xl hover:bg-transparent hover:border hover:text-primary">Book Now</button>
 
     </section>
     

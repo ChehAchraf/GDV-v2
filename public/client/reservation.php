@@ -42,7 +42,7 @@ if(!isset($_SESSION['id_logged']))
             left: 0;
             width: 0;
             height: 2px;
-            background: #9c7e54;
+            background: #5051FA;
             transition: width 0.3s ease;
         }
 
@@ -57,7 +57,7 @@ if(!isset($_SESSION['id_logged']))
             theme: {
             extend: {
                 colors: {
-                primary: '#9c7e54',
+                primary: '#5051FA',
                 borderColor: '#5f5d5d',
                 bgcolor: '#F3F3F3',
                 },
@@ -74,8 +74,7 @@ if(!isset($_SESSION['id_logged']))
 </head>
 <body class="w-full h-full min-h-screen text-white font-primary ">
     <?php include 'header.php'; 
-        $allMenu = $con ->query('SELECT * from menu');
-        $allReservations = $con->query("SELECT * from reservation where id_client = " .$_SESSION['id_logged']." ");
+       
         
     ?>
     <section class="bg-bgcolor py-16 px-8 text-black">

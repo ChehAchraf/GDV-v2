@@ -48,7 +48,7 @@
             theme: {
             extend: {
                 colors: {
-                primary: '#9c7e54',
+                primary: '#5051FA',
                 borderColor: '#5f5d5d',
                 bgcolor: '#F3F3F3',
                 },
@@ -71,9 +71,9 @@
             </div>
       
             <ul class="md:flex justify-center w-[30%]  justify-around text-lg font-bold tracking-widest">
-                    <li ><a class="nav-items hover:text-[#9c7e54] hover:font-bold" href="./client/home.php">Home</a></li>
-                    <li><a class="nav-items hover:text-[#9c7e54] hover:font-bold "  href="./client/menu.php">Menu</a></li>
-                    <li><a class="nav-items hover:text-[#9c7e54] hover:font-bold"  href="./client/contact.php">Contact</a></li>
+                    <li ><a class="nav-items hover:text-[#5051FA] hover:font-bold" href="./client/home.php">Home</a></li>
+                    <li><a class="nav-items hover:text-[#5051FA] hover:font-bold "  href="./client/activite.php">Activities</a></li>
+                    <li><a class="nav-items hover:text-[#5051FA] hover:font-bold"  href="./client/contact.php">Contact</a></li>
                     <?php
                         if(isset($_SESSION['id_logged'])){
                         echo "<li><a href='reservation.php'>My&nbsp;Reservations</a></li>";
@@ -92,7 +92,7 @@
     </header>
     <section class="flex flex-col md:flex-row w-full h-full p-4 md:px-32 items-center justify-around text-black">
             <div class=" flex w-[90%] md:w-[40%]">
-                <img class="w-[100%] rounded-tr-3xl rounded-tl-full rounded-bl-full rounded-br-full " src="image/image.webp" alt="">
+                <img class="w-[100%] rounded-tr-3xl rounded-tl-full rounded-bl-full rounded-br-full " src="image/image 1.webp" alt="">
                      
             </div>
             <div class="w-[90%] md:w-[40%] flex flex-col gap-8">
