@@ -71,7 +71,7 @@ if(isset($_SESSION['id_logged']))
         </script>
 </head>
 <body class="w-full h-full min-h-screen text-white font-primary ">
-<header class="bg-[url('image/bg22.png')] bg-cover h-[40%] bg-no-repeat object-fit  " >
+<header class="bg-[url('image/back2.png')] bg-cover h-[40%] bg-no-repeat object-fit  " >
         <nav class="w-full h-[40%] sticky  flex overflow-hidden items-center justify-around">
             <div class="h-full flex items-center h-full ">
                 <img class="w-28 h-16 " src="image/logo2.png" alt="">
