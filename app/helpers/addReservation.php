@@ -17,7 +17,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         }
         $db  = new Database();
         $pdo = $db->getConnection();
-        $reservation = new Reservation($idClient,$idActivity,$nbrPersonnes); 
+        $reservation = new Reservation(null,$idClient,$idActivity,$nbrPersonnes); 
         $result = $reservation->creerReservation($pdo);
         if($result){
             header("Location: ../../public/client/reservation.php");

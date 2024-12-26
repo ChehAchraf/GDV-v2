@@ -16,6 +16,13 @@ class getAllReservations {
         $reservations = Reservation::getReservationById($pdo,$id);
         return $reservations;
     }
+    static function getMyReservations($id_logged)
+    {
+        $db  = new Database();
+        $pdo = $db->getConnection();
+        $myReservations = Reservation::getMyReservations($pdo,$id_logged);
+        return $myReservations;
+    }
     
     
 
