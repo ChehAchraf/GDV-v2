@@ -33,8 +33,8 @@ class User {
     }
 
     public function register($pdo) {
-        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE nom = :nom AND mot_de_pass = :password");
-        $stmt->execute(['nom' => $this->nom, 'prenom' => $this->email]);
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email");
+        $stmt->execute(['email' => $this->email,]);
         $user = $stmt->fetch();
 
         if ($user) {

@@ -1,7 +1,10 @@
 <?php 
 require_once('../../app/classes/User.php');
 if(isset($_SESSION['user_role'])){
-    echo "yes";
+    if(isset($_SESSION['added'])){
+        echo $_SESSION['added'];
+        unset($_SESSION['added']);
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -92,6 +95,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   <div class="w3-row-padding  w3-padding-16"> 
     <div class="w3-half">
         <div class="w3-container">
+            <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == "SuperAdmin"): ?>
             <h3>Create Client</h3>
             <div class="w3-card-4 w3-padding-32 w3-margin-top w3-round w3-container">
                 <form action="../../app/helpers/create_user.php" method="POST" >
@@ -118,6 +122,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
                 </form>
                 
             </div>
+            <?php endif ?>
         </div>
     </div>
     <div class="w3-half">

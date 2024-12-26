@@ -39,7 +39,7 @@ class SuperAdmin extends User {
             'role' => 'SuperAdmin'
         ]);
 
-        return "SuperAdmin created successfully.";
+        return true;
     }
 
     public function __toString() {
