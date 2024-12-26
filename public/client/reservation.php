@@ -4,7 +4,7 @@ require_once ('../../app/helpers/getAllReservations.php');
 require_once ('../../app/helpers/getActivite.php');
 if(!isset($_SESSION['id']))
 {
-    header('Location: /GV2/public/client/home.php');
+    header('Location: /GDV-v2/public/client/home.php');
 }
 $reservations = getAllReservations::getAllReservations();
 $allActivites = getActivite::getAllActivites();
