@@ -6,7 +6,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $res = User::logout();
         if($res)
         {
-            header("Location: /GV2/public/index.php");
+            header("Location: /GDV-v2/public/index.php");
         }
     } else {
         echo "aa";
