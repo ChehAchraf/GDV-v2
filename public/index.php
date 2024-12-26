@@ -33,7 +33,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #9c7e54;
+            background: #5051FA;
             transition: width 0.3s ease;
         }
 
@@ -75,14 +75,15 @@
                     <li><a class="nav-items hover:text-[#5051FA] hover:font-bold "  href="./client/activite.php">Activities</a></li>
                     <li><a class="nav-items hover:text-[#5051FA] hover:font-bold"  href="./client/contact.php">Contact</a></li>
                     <?php
-                        if(isset($_SESSION['id_logged'])){
-                        echo "<li><a href='reservation.php'>My&nbsp;Reservations</a></li>";
+                    session_start();
+                        if(isset($_SESSION['id'])){
+                        header('Location: client/home.php');
                     }
                     ?>
                 </ul>
      
             <div>
-                <button class="px-4 py-2 bg-primary rounded-xl hover:bg-transparent hover:border hover:text-primary"><a href="signup.php">Login/Signup</a></button>
+                <button class="px-4 py-2 bg-primary rounded-xl hover:bg-white hover:border hover:text-primary"><a href="signup.php">Login/Signup</a></button>
             </div>
         </nav>
         <div class="h-72 w-[100%] flex p-8 items-center justify-center ">
@@ -107,7 +108,7 @@
                             <label for="password-login">Password</label>
                             <input id="password-login" name="password-login" class='border pl-4 py-2' type="password" placeholder="Enter your password...">
                         </div>
-                        <button class="px-4 py-2 bg-primary rounded-xl hover:bg-transparent hover:border hover:text-primary">Login</button>
+                        <button class="px-4 py-2 bg-primary rounded-xl text-white hover:bg-transparent hover:border hover:text-primary">Login</button>
                         <p class="text-[#757575] text-center">Don't have an account? <a class="underline" href="signup.php">create one</a> </p>
                         <p class="text-[#ff0000] text-center"> 
                             <?php

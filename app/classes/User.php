@@ -15,7 +15,9 @@ class User {
         $this->email = $email;
         $this->role = $role;
     }
-
+    function __tostring(){
+        return 'mon nom est '.$this->nom. ' mon email est '.$this->email;
+    }
     public function login($pdo) {
         $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email ");
         $stmt->execute(['email' => $this->email]);
@@ -33,12 +35,12 @@ class User {
     }
 
     public function register($pdo) {
-        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email");
-        $stmt->execute(['email' => $this->email,]);
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email ");
+        $stmt->execute(['email' => $this->email]);
         $user = $stmt->fetch();
-
+        
         if ($user) {
-            return "User already exists";
+            return false;
         }
 
         $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
@@ -58,6 +60,13 @@ class User {
         $stmt->execute(['user_id' => $userId, 'activity_id' => $activityId, 'date' => $date]);
 
         return "Reservation made successfully";
+    }
+    public static function logout(){
+        unset($_SESSION['id']);
+        unset($_SESSION['user_role']);
+        session_destroy();
+       
+        return true;
     }
 
 }
