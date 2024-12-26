@@ -10,7 +10,7 @@
                     <li><a class="nav-items hover:text-[#5051FA] hover:font-bold "  href="activite.php">Activities</a></li>
                     <li><a class="nav-items hover:text-[#5051FA] hover:font-bold"  href="contact.php">Contact</a></li>
                     <?php
-                      session_start();
+                      
                         if(isset($_SESSION['id'])){
                         echo "<li><a class='nav-items hover:text-[#5051FA] hover:font-bold' href='reservation.php'>My&nbsp;Reservations</a></li>";
                     }
