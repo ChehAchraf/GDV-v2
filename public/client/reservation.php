@@ -2,10 +2,12 @@
 
 require_once ('../../app/helpers/getAllReservations.php');
 require_once ('../../app/helpers/getActivite.php');
+session_start();
 if(!isset($_SESSION['id']))
 {
-    header('Location: /GDV-v2/public/client/home.php');
+    header('Location: /GV2/public/client/home.php');
 }
+
 $reservations = getAllReservations::getAllReservations();
 $allActivites = getActivite::getAllActivites();
 ?>
@@ -78,7 +80,7 @@ $allActivites = getActivite::getAllActivites();
 </head>
 <body class="w-full h-full min-h-screen text-white font-primary ">
     <?php include 'header.php'; 
-     
+   
         
     ?>
     <section class="bg-bgcolor py-16 px-8 text-black">
