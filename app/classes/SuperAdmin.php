@@ -39,7 +39,7 @@ class SuperAdmin extends User {
             'prenom' => $prenom,
             'password' => $hashedPassword,
             'email' => $email,
-            'role' => 'super_admin'
+            'role' => 'SuperAdmin'
         ]);
 
         return "SuperAdmin created successfully.";

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../../backend/database/database.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +37,7 @@ include '../../backend/database/database.php';
             left: 0;
             width: 0;
             height: 2px;
-            background: #9c7e54;
+            background: #5051FA;
             transition: width 0.3s ease;
         }
 
@@ -52,7 +52,7 @@ include '../../backend/database/database.php';
             theme: {
             extend: {
                 colors: {
-                primary: '#9c7e54',
+                primary: '#5051FA',
                 borderColor: '#5f5d5d',
                 bgcolor: '#F3F3F3',
                 },
@@ -67,17 +67,17 @@ include '../../backend/database/database.php';
         };
         </script>
 </head>
-<body class="w-full h-full min-h-screen text-white font-primary ">
-<header class="bg-[url('../image/bg22.png')] bg-cover h-[40%] bg-no-repeat object-fit  " >
+<body class="w-full h-full min-h-screen text-black font-primary ">
+<header class="bg-[url('../image/back2.png')] bg-cover h-[40%] bg-no-repeat object-fit  " >
         <nav class="w-full h-[40%] sticky  flex overflow-hidden items-center justify-around">
             <div class="h-full flex items-center h-full ">
                 <img class="w-28 h-16 " src="../image/logo2.png" alt="">
             </div>
       
-                <ul class="flex w-[30%] justify-around text-lg font-bold tracking-widest">
-                    <li ><a class="nav-items hover:text-[#9c7e54] hover:font-bold" href="home.php">Home</a></li>
-                    <li><a class="nav-items hover:text-[#9c7e54] hover:font-bold "  href="menu.php">Menu</a></li>
-                    <li><a class="nav-items hover:text-[#9c7e54] hover:font-bold"  href="contact.php">Contact</a></li>
+                <ul class="flex w-[30%] justify-around text-lg text-white font-bold tracking-widest">
+                    <li ><a class="nav-items hover:text-[#5051FA] hover:font-bold" href="home.php">Home</a></li>
+                    <li><a class="nav-items hover:text-[#5051FA] hover:font-bold "  href="activite.php">Activities</a></li>
+                    <li><a class="nav-items hover:text-[#5051FA] hover:font-bold"  href="contact.php">Contact</a></li>
                     <?php
                         if(isset($_SESSION['id_logged'])){
                         echo "<li><a href='reservation.php'>My Reservations</a></li>";
@@ -85,7 +85,7 @@ include '../../backend/database/database.php';
                     ?>
                 </ul>
      
-            <div>
+            <div class="text-white">
             <?php
                 if(isset($_SESSION['id_logged']))
                 {
@@ -99,7 +99,7 @@ include '../../backend/database/database.php';
             ?>            </div>
         </nav>
         <div class="h-72 w-[100%] flex p-8 items-center justify-center ">
-                <p class="text-[50px]">Contact</p>
+                <p class="text-[50px] text-white">Contact</p>
         </div>
 
     </header>

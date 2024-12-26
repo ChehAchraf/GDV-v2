@@ -1,9 +1,13 @@
 <?php
 session_start();
-if(!isset($_SESSION['id_logged']))
-{
-    header('Location: /Gestion Restaurant/frontend/index.php');
-}
+// if(!isset($_SESSION['id_logged']))
+// {
+//     header('Location: /Gestion Restaurant/frontend/index.php');
+// }
+require_once ('../../app/helpers/getAllReservations.php');
+require_once ('../../app/helpers/getActivite.php');
+$reservations = getAllReservations::getAllReservations();
+$allActivites = getActivite::getAllActivites();
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +46,7 @@ if(!isset($_SESSION['id_logged']))
             left: 0;
             width: 0;
             height: 2px;
-            background: #9c7e54;
+            background: #5051FA;
             transition: width 0.3s ease;
         }
 
@@ -57,7 +61,7 @@ if(!isset($_SESSION['id_logged']))
             theme: {
             extend: {
                 colors: {
-                primary: '#9c7e54',
+                primary: '#5051FA',
                 borderColor: '#5f5d5d',
                 bgcolor: '#F3F3F3',
                 },
@@ -74,8 +78,7 @@ if(!isset($_SESSION['id_logged']))
 </head>
 <body class="w-full h-full min-h-screen text-white font-primary ">
     <?php include 'header.php'; 
-        $allMenu = $con ->query('SELECT * from menu');
-        $allReservations = $con->query("SELECT * from reservation where id_client = " .$_SESSION['id_logged']." ");
+       
         
     ?>
     <section class="bg-bgcolor py-16 px-8 text-black">
@@ -87,50 +90,66 @@ if(!isset($_SESSION['id_logged']))
         <!-- Reservation Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 ">
 
-            <?php
-                if($allReservations->num_rows > 0){
-                    foreach($allReservations as $reservation)
+            	<?php
+                    if($reservations)
                     {
-                        $reservationDate[] = $reservation['date_reservation'];
-                        $reservationHeure[] = $reservation['heure_reservation'];
+                        $cmp = 1;
+                        foreach($reservations as $res)
+                        {
+                            $act = getActivite::getActiviteById( $res['id_activite']);
+                            
+                        echo "
+                     <div class='bg-white rounded-lg shadow-lg p-6'>
+                                <h3 class='text-xl font-bold text-primary mb-4'>Reservation $cmp</h3>
+                                <ul class='text-gray-700'>
+                                    <li><span class='font-bold'>Activite:</span> ".$act['titre']."</li>
+                                    <li><span class='font-bold'>Description:</span> ".$act['description']."</li>
+                                    <li><span class='font-bold'>Nombre de Personnes:</span>  ".$res['nbr_personne']."</li>
+                                    <li><span class='font-bold'>Date Reservation:</span>  ".$res['date_reservation']."</li>
+                                    <li><span class='font-bold'>Date Activite:</span>  ".$act['date_debut']."</li>
+                                    <li><span class='font-bold'>Staus:</span> ".$res['statut']."</li>
 
-                        echo "<div class='bg-white rounded-lg shadow-lg p-6'>
-                <h3 class='text-xl font-bold text-primary mb-4'>Reservation 1</h3>
-                <ul class='text-gray-700'>
-                    <li><span class='font-bold'>Adresse:</span> ".$reservation['addresse_reservation']."</li>
-                    <li><span class='font-bold'>Nombre de Personnes:</span> ".$reservation['nbr_personnes']."</li>
-                    <li><span class='font-bold'>Date:</span> ".$reservation['date_reservation']."</li>
-                    <li><span class='font-bold'>Heure:</span> ".$reservation['heure_reservation']."</li>
-                    <li><span class='font-bold'>Staus:</span> ".$reservation['status']."</li>
+                                </ul>
+                                <div class='flex justify-center gap-2'>
+                                ";
+                                if($res['statut'] != 'Annulée')
+                                { echo"
+                                <form class='cancel-form' action='../../app/helpers/CancelReservation.php' method='POST' >
+                                        <input type='hidden' name='res-id' value=".$res['id_reservation'].">
+                                            <input type='hidden' name='action' value='confirm'>                
+                                <button name='confirm' class='mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-[#826642] transition duration-300'>
+                                    Cancel Reservation
+                                </button>
+                                </form>";}
+                                echo "
+                                        <input type='hidden' name='res-id' value=".$res['id_reservation'].">   
+                                        <button name='edit_reservation'   onclick=\"openEditModal('".$res['id_reservation']."', '".$res['id_activite']."', '".$res['nbr_personne']."')\"   class='mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-[#826642] transition duration-300'>
+                                            Edit Reservation
+                                        </button>
+                            
+                                        </div>        
+                            </div>";
+                        $cmp = $cmp+1;
+                        }
 
-                </ul>
-                <div class='flex justify-center gap-2'>
-                <form class='cancel-form' action='../../backend/actionsPHP/reservation/updateStatus.php' method='POST' >
-                        <input type='hidden' name='res-id' value=".$reservation['id'].">
-                        <input type='hidden' name='new-status' value='Canceled'>
-                            <input type='hidden' name='action' value='confirm'>
-";
-                        
-                        if($reservation['status'] !== 'Canceled')
-                        {echo "
-                <button name='confirm' class='mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-[#826642] transition duration-300'>
-                    Cancel Reservation
-                </button>";}
-                echo "</form>
-                
-                        <input type='hidden' name='res-id' value=".$reservation['id'].">   
-                        <button name='edit_reservation' onclick=\"openEditModal('".$reservation['id']."', '".$reservation['id_menu']."', '".$reservation['heure_reservation']."', '".$reservation['date_reservation']."', '".$reservation['nbr_personnes']."', '".$reservation['addresse_reservation']."')\" class='mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-[#826642] transition duration-300'>
-                            Edit Reservation
-                        </button>
-              
-                         </div>        
-            </div>";
+                    } else 
+                    {
+                        echo "  <p class='text-center w-full '> You don't have any reservation</p>";
                     }
-                } else{
-                    echo "<p class='text-center w-full '> You don't have any reservation</p>";
+                ?>
+              
+            
+            
+            <script>
+                    function openEditModal(id,idActivite,nbrPersonnes){
+                    const modalEdit = document.getElementById('reservationModal-edit');
+                    modalEdit.classList.remove('hidden');
+                    document.getElementById('')
+                    document.getElementById('r-id').value = id
+                    document.getElementById('nbr-personne-reservation-edit').value = nbrPersonnes
+                    document.getElementById('activite-select-edit').value = idActivite
                 }
-            ?>
-
+         </script>
           
 
    
@@ -150,28 +169,21 @@ if(!isset($_SESSION['id_logged']))
     <div id="reservationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white rounded-lg p-8 shadow-lg w-[90%] md:w-[50%]">
             <h3 class="text-2xl font-bold text-primary mb-6">New Reservation</h3>
-            <form id="reservation-form" action="../../backend/actionsPHP/reservation/add.php" method="POST">
+            <form id="reservation-form" action="../../app/helpers/addReservation.php" method="POST">
     <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Menu</label>
-        <select name="menu-select" id="menu-select" class="w-full border border-gray-300 text-gray-600 rounded-md p-2 focus:ring-primary focus:border-primary">
-            <option value="" checked>Choose a menu</option>
-            <?php
-            foreach ($allMenu as $menu) {
-                echo "<option value='" . $menu['id'] . "'>" . $menu['titre'] . "</option>";
-            }
-            ?>
+        <label class="block font-bold text-gray-700 mb-2">Activite</label>
+        
+        <select name="activite-select" id="activite-select" class=" w-full border border-gray-300 text-gray-600 rounded-md p-2 focus:ring-primary focus:border-primary">
+            <option value="" checked>Choose an Activity</option>
+                    <?php
+                    foreach($allActivites as $activite)
+                    echo "<option value='".$activite['id_activite']."'>".$activite['titre']." (".$activite['type'].")</option>";
+                    ?>
+                
+           
         </select>
     </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Adresse</label>
-        <input 
-            name="adresse-reservation"
-            id="adresse-reservation"
-            type="text" 
-            class="w-full border border-gray-300 rounded-md p-2 focus:ring-primary focus:border-primary"
-            placeholder="Enter Address"
-        >
-    </div>
+   
     <div class="mb-4">
         <label class="block font-bold text-gray-700 mb-2">Nombre de Personnes</label>
         <input 
@@ -182,24 +194,7 @@ if(!isset($_SESSION['id_logged']))
             placeholder="Enter Number of People"
         >
     </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Date</label>
-        <input 
-            name="date-reservation"
-            id="date-reservation"
-            type="date" 
-            class="w-full border border-gray-300 rounded-md p-2 text-gray-600 focus:ring-primary focus:border-primary"
-        >
-    </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Heure</label>
-        <input 
-            name="heure-reservation"
-            id="heure-reservation"
-            type="time" 
-            class="w-full border border-gray-300 rounded-md text-gray-600 p-2 focus:ring-primary focus:border-primary"
-        >
-    </div>
+   
     <div class="flex justify-end space-x-4">
         <button 
             type="button" 
@@ -220,29 +215,21 @@ if(!isset($_SESSION['id_logged']))
         <div id="reservationModal-edit" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-black hidden ">
         <div class="bg-white rounded-lg p-8 shadow-lg w-[90%] md:w-[50%]">
             <h3 class="text-2xl font-bold text-primary mb-6">Modify Reservation</h3>
-            <form id="reservation-form-edit" action="../../backend/actionsPHP/reservation/edit.php" method="POST">
+            <form id="reservation-form-edit" action="../../app/helpers/editReservation.php" method="POST">
     <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Menu</label>
+        <label class="block font-bold text-gray-700 mb-2">Reservation</label>
         <input type="hidden" id="r-id" name="r-id">
-        <select name="menu-select-edit" id="menu-select-edit" class="w-full border border-gray-300 text-gray-600 rounded-md p-2 focus:ring-primary focus:border-primary">
-            <option value="" checked>Choose a menu</option>
-            <?php
-            foreach ($allMenu as $menu) {
-                echo "<option value='" . $menu['id'] . "' >" . $menu['titre'] . "</option>";
-            }
-            ?>
+        <select name="activite-select-edit" id="activite-select-edit" class=" w-full border border-gray-300 text-gray-600 rounded-md p-2 focus:ring-primary focus:border-primary">
+            <option value="" checked>Choose an Activity</option>
+                    <?php
+                    foreach($allActivites as $activite)
+                    echo "<option value='".$activite['id_activite']."'>".$activite['titre']." (".$activite['type'].")</option>";
+                    ?>
+                
+           
         </select>
     </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Adresse</label>
-        <input 
-            name="adresse-reservation-edit"
-            id="adresse-reservation-edit"
-            type="text" 
-            class="w-full border border-gray-300 rounded-md p-2 focus:ring-primary focus:border-primary"
-            placeholder="Enter Address"
-        >
-    </div>
+    
     <div class="mb-4">
         <label class="block font-bold text-gray-700 mb-2">Nombre de Personnes</label>
         <input 
@@ -253,24 +240,7 @@ if(!isset($_SESSION['id_logged']))
             placeholder="Enter Number of People"
         >
     </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Date</label>
-        <input 
-            name="date-reservation-edit"
-            id="date-reservation-edit"
-            type="date" 
-            class="w-full border border-gray-300 rounded-md p-2 text-gray-600 focus:ring-primary focus:border-primary"
-        >
-    </div>
-    <div class="mb-4">
-        <label class="block font-bold text-gray-700 mb-2">Heure</label>
-        <input 
-            name="heure-reservation-edit"
-            id="heure-reservation-edit"
-            type="time" 
-            class="w-full border border-gray-300 rounded-md text-gray-600 p-2 focus:ring-primary focus:border-primary"
-        >
-    </div>
+   
     <div class="flex justify-end space-x-4">
         <button 
             type="button" 
@@ -289,172 +259,7 @@ if(!isset($_SESSION['id_logged']))
         </div>
         </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-       const $allCancel = document.querySelectorAll('.cancel-form')
-       $allCancel.forEach(cancel => {
-        cancel.addEventListener('submit', function(event){
-            event.preventDefault()
-            console.log('test')
-            Swal.fire({
-            title: 'Cancel Reservation',
-            text: 'Are you sure you want to cancel this reservation?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Cancel',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log(cancel)
-                cancel.submit();    
-            }
-        });
-        })
 
-       })
-    document.getElementById('reservation-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-       
-        const menuSelect = document.getElementById('menu-select').value;
-        const address = document.getElementById('adresse-reservation').value.trim();
-        const numberOfPeople = document.getElementById('nbr-personne-reservation').value;
-        const datee = document.getElementById('date-reservation').value;
-        const time = document.getElementById('heure-reservation').value;
-
-      
-        const addressRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
-
-        if (!menuSelect) {
-            Swal.fire('Error', 'Please select a menu.', 'error');
-            return;
-        }
-        if (!addressRegex.test(address)) {
-            Swal.fire('Error', 'Please enter a valid address.', 'error');
-            return;
-        }
-        if (numberOfPeople <= 0) {
-            Swal.fire('Error', 'Number of people must be greater than 0.', 'error');
-            return;
-        }
-        if (!datee ||  new Date(datee).getTime() < Date.now()) {
-            Swal.fire('Error', 'Please select a valide date.', 'error');
-            return;
-        } 
-  
-           
-        if (!time) {
-            Swal.fire('Error', 'Please select a time.', 'error');
-            return;
-        }
-        const allDate = <?php echo json_encode($reservationDate) ?>;
-        // console.log(allDate)
-        // console.log(allDate.includes(datee))
-        const allHeure = <?php echo json_encode($reservationHeure) ?>;
-        if(allDate.includes(datee) == true)
-        {
-            console.log(allHeure)
-            console.log(time)
-        console.log(allHeure.includes(time))
-            if(allHeure.includes(time+":00") == true)
-                {
-                    Swal.fire('Error', 'There already a reservation on this date and time choose another time', 'error');
-                    return;
-                }
-        }
-
-        
-        Swal.fire({
-            title: 'Confirm Reservation',
-            text: 'Are you sure you want to confirm this reservation?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Confirm',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('reservation-form').submit();
-            }
-        });
-    });
-    document.getElementById('reservation-form-edit').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-       
-        const menuSelect = document.getElementById('menu-select-edit').value;
-        const address = document.getElementById('adresse-reservation-edit').value.trim();
-        const numberOfPeople = document.getElementById('nbr-personne-reservation-edit').value;
-        const datee = document.getElementById('date-reservation-edit').value;
-        const time = document.getElementById('heure-reservation-edit').value;
-
-      
-        const addressRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
-
-        if (!menuSelect) {
-            Swal.fire('Error', 'Please select a menu.', 'error');
-            return;
-        }
-        if (!addressRegex.test(address)) {
-            Swal.fire('Error', 'Please enter a valid address.', 'error');
-            return;
-        }
-        if (numberOfPeople <= 0) {
-            Swal.fire('Error', 'Number of people must be greater than 0.', 'error');
-            return;
-        }
-        if (!datee || new Date(datee).getTime() < Date.now()) {
-            Swal.fire('Error', 'Please select a valide date.', 'error');
-            return;
-        } 
-  
-           
-        if (!time) {
-            Swal.fire('Error', 'Please select a time.', 'error');
-            return;
-        }
-        const allDate = <?php echo json_encode($reservationDate) ?>;
-        // console.log(allDate)
-        // console.log(allDate.includes(datee))
-        const allHeure = <?php echo json_encode($reservationHeure) ?>;
-        if(allDate.includes(datee) == true)
-        {
-            console.log(allHeure)
-            console.log(time)
-        console.log(allHeure.includes(time))
-            if(allHeure.includes(time+":00") == true)
-                {
-                    Swal.fire('Error', 'There already a reservation on this date and time choose another time', 'error');
-                    return;
-                }
-        }
-
-        
-        Swal.fire({
-            title: 'Modify Reservation',
-            text: 'Are you sure you want to confirm this Modification?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Confirm',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('reservation-form-edit').submit();
-            }
-        });
-    });
-
-    function openEditModal(id,idMenu,heure_reservation,date_reservation,nbrPersonnes,address){
-        const modalEdit = document.getElementById('reservationModal-edit');
-        modalEdit.classList.remove('hidden');
-        document.getElementById('')
-        document.getElementById('r-id').value = id
-        document.getElementById('heure-reservation-edit').value = heure_reservation
-        document.getElementById('date-reservation-edit').value = date_reservation
-        document.getElementById('nbr-personne-reservation-edit').value = nbrPersonnes
-        document.getElementById('adresse-reservation-edit').value = address
-        document.getElementById('menu-select-edit').value = idMenu
-    }
-</script>
 
         
 </section>
