@@ -10,17 +10,19 @@
                     <li><a class="nav-items hover:text-[#5051FA] hover:font-bold "  href="activite.php">Activities</a></li>
                     <li><a class="nav-items hover:text-[#5051FA] hover:font-bold"  href="contact.php">Contact</a></li>
                     <?php
-                        if(isset($_SESSION['id_logged'])){
-                        echo "<li><a href='reservation.php'>My&nbsp;Reservations</a></li>";
+                      session_start();
+                        if(isset($_SESSION['id'])){
+                        echo "<li><a class='nav-items hover:text-[#5051FA] hover:font-bold' href='reservation.php'>My&nbsp;Reservations</a></li>";
                     }
                     ?>
                 </ul>
      
             <div>
             <?php
-                if(isset($_SESSION['id_logged']))
+          
+                if(isset($_SESSION['id']))
                 {
-                   echo' <button class="px-4 py-2 bg-primary rounded-xl hover:bg-transparent hover:border hover:text-primary"><a href="../../backend/actionsPHP/logout.php">Logout</a></button>';
+                    echo' <form action="../../app/helpers/logout.php" method="post"><button name="submit" class="px-4 py-2 bg-primary rounded-xl hover:bg-transparent hover:border hover:text-primary">Logout</button></form>';
 
                 }
                 else 
