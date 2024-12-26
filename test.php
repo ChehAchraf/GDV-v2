@@ -15,20 +15,12 @@ echo "<br>";
 echo $user1->register($pdo);
 $superAdmin = new SuperAdmin("adminName", "adminSurname", "adminPassword123", "admin@example.com");
 echo "<br>";
-echo $superAdmin->createSuperAdmin($pdo, "ilyas1", "ok", "dd", "ilya1s@dd.com");
+echo $superAdmin->createSuperAdmin($pdo, "ashraf", "chehboun", "dd", "ilyfzzzzzzzzzzdd@dd.com");
 echo "<br>";
-$admin = new Admin("normaladmin","test","hhh","123");
+$admin = new Admin("normaladmin","test","hhh"   ,"123");
 echo $admin->createAdmin($pdo,"achraf","chehboun","password","ashrafchehboun@gmail.com");
 
-// $act1 = new Activite("Activtie1","my descirption",50,"2024-11-11","2024-11-11",20,"vol");
-// echo "<br>";
-// echo $act1->creerActivite($pdo);
-$res = new Reservation(3,1,'En Attente',10);
-echo "<br>";
- echo $res->creerReservation($pdo);
- echo "<br>";
 
- print_r(Reservation::getAllReservations($pdo));
 
 
 

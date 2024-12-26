@@ -1,8 +1,5 @@
 <?php
 class SuperAdmin extends User {
-    public function __construct($nom, $prenom, $password, $email) {
-        parent::__construct($nom, $prenom, $password, $email, 'super_admin');
-    }
     public function createAdmin($pdo, $nom, $prenom, $password, $email) {
         $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email");
         $stmt->execute(['email' => $email]);
@@ -23,7 +20,7 @@ class SuperAdmin extends User {
 
         return "Admin created successfully.";
     }
-    public function createSuperAdmin($pdo, $nom, $prenom, $password, $email) {
+    public function createSuperAdmin($pdo, $nom, $prenom, $password, $email ) {
         $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();

@@ -1,9 +1,6 @@
 <?php
 session_start();
-if(isset($_SESSION['id_logged']))
-{
-    header('Location: /Gestion Restaurant/frontend/index.php');
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +37,7 @@ if(isset($_SESSION['id_logged']))
             left: 0;
             width: 0;
             height: 2px;
-            background: #9c7e54;
+            background: #5051FA;
             transition: width 0.3s ease;
         }
 
@@ -82,8 +79,9 @@ if(isset($_SESSION['id_logged']))
                     <li><a class="nav-items hover:text-[#5051FA] hover:font-bold "  href="./client/activite.php">Activities</a></li>
                     <li><a class="nav-items hover:text-[#5051FA] hover:font-bold"  href="./client/contact.php">Contact</a></li>
                     <?php
-                        if(isset($_SESSION['id_logged'])){
-                        echo "<li><a href='reservation.php'>My&nbsp;Reservations</a></li>";
+                    
+                        if(isset($_SESSION['id'])){
+                            header('Location: client/home.php');
                     }
                     ?>
                 </ul>
@@ -104,10 +102,14 @@ if(isset($_SESSION['id_logged']))
             </div>
             <div class="w-[90%] md:w-[40%] flex flex-col gap-8">
                     <p class="text-[#757575] text-center text-[40px] ">SIGN UP</p>
-                    <form action="../backend/actionsPHP/signup.php" method="post" class="flex flex-col gap-4" >
+                    <form action="../app/helpers/signup.php" method="post" class="flex flex-col gap-4" >
                     <div class="flex flex-col gap-2">
-                        <label for="name-signup text-xl">Name</label>
-                        <input id="name-signup" name="name-signup" type="text" class='border pl-4 py-2' placeholder="Enter your name...">
+                        <label for="firstName-signup text-xl">First Name</label>
+                        <input id="firstName-signup" name="firstName-signup" type="text" class='border pl-4 py-2' placeholder="Enter your first name...">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                        <label for="lastName-signup text-xl">Last Name</label>
+                        <input id="lastName-signup" name="lastName-signup" type="text" class='border pl-4 py-2' placeholder="Enter your last name...">
                         </div>
                         <div class="flex flex-col gap-2">
                         <label for="email-signup text-xl">Email</label>
@@ -118,10 +120,18 @@ if(isset($_SESSION['id_logged']))
                             <label for="password-signup">Password</label>
                             <input id="password-signup" name="password-signup" class='border pl-4 py-2' type="password" placeholder="Enter your password...">
                         </div>
-                        <button class="px-4 py-2 bg-primary rounded-xl hover:bg-transparent hover:border hover:text-primary">Sign Up</button>
+                        <button name="submit" class="px-4 py-2 bg-primary rounded-xl hover:bg-transparent hover:border hover:text-primary">Sign Up</button>
                         <p class="text-[#757575] text-center">Already have an account? <a class="underline" href="index.php">login</a> </p>
 
                     </form>
+                    <?php
+                        if(isset($_SESSION['error'])){
+                    ?>
+                    <p class='text-[#ff0000] text-center'><?php echo $_SESSION['error']?></p>
+                    <?php
+                    unset($_SESSION['error']);
+                        }
+                    ?>
                 
             </div>
     </section>
