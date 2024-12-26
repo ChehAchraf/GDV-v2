@@ -1,10 +1,12 @@
 <?php 
 require_once('../../app/classes/User.php');
+require_once('../../app/helpers/getActivite.php');
 if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == "Admin" or $_SESSION['user_role'] == "SuperAdmin")){
     if(isset($_SESSION['added'])){
         echo $_SESSION['added'];
         unset($_SESSION['added']);
     }
+  $allActivtites = getActivite::getAllActivites();
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,6 +17,59 @@ if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == "Admin" or $_SESS
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+
+
+    <style>
+        input[type="search"]::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+
+        .nav-items {
+            position: relative;
+        }
+
+        .nav-items::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #5051FA;
+            transition: width 0.3s ease;
+        }
+
+        .nav-items:hover::after {
+            width: 100%;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5051FA',
+                        borderColor: '#5f5d5d',
+                        bgcolor: '#F3F3F3',
+                    },
+                    fontFamily: {
+                        // primary: ['Consolas', 'monospace'],
+                        primary: ['Playfair Display', 'serif'],
+                        // primary: ['EB Garamond', 'serif'],
+                        secondary: ['Pattaya', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
@@ -64,90 +119,84 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div id="main" class="w3-main" style="margin-left:300px;margin-top:43px;">
 
   <!-- Header -->
-  <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
-  </header>
+  
 
-  <div class="w3-row-padding w3-margin-bottom">
+  <div class="w3-row-padding w3-margin-bottom pt-16">
     <div class="w3-quarter">
-      <div class="w3-container w3-red w3-padding-16">
-        <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
-        <div class="w3-right">
-          <h3></h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Events</h4>
-      </div>
+    <button id="addActivityBtn" class="flex justify-end w3-container w3-blue w3-padding-16 rounded-xl hover:text-blue">
+        Add Activity
+    </button>
     </div>
-    <div class="w3-quarter">
-      <div class="w3-container w3-orange w3-text-white w3-padding-16">
-        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
-        <div class="w3-right">
-          <h3></h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Users</h4>
-      </div>
-    </div>
+    
   </div>
 
   <div class="w3-row-padding  w3-padding-16"> 
-    <div class="w3-half">
-        <div class="w3-container">
-            <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == "SuperAdmin"): ?>
-            <h3>Create Client</h3>
-            <div class="w3-card-4 w3-padding-32 w3-margin-top w3-round w3-container">
-                <form action="../../app/helpers/create_user.php" method="POST" >
+    <div class="">
+        <div class="w3-container w-full ">
+        <div>
+                <table class="w-full border rounded-lg" >
+                    <tr class="bg-gray-200 border-b  items-center ">
+                    <td class="text-center w-10 p-4"> <input type="checkbox" name="" id=""></td>
+                      <td>&nbsp;Titre</td>
+                      <td>&nbsp;Description</td>
+                      <td>&nbsp;Price</td>
+                      <td>&nbsp;Date Debut</td>
+                      <td>&nbsp;Date Fin</td>
+                      <td>&nbsp;Places Disponibles</td>
+                      <td>&nbsp;Type</td>
+                      <td>&nbsp;Action</td>
+                    </tr>
+                    <?php
+                    foreach($allActivtites as $row)
+                    {
+                        $id=htmlspecialchars($row['id_activite']);
+                        $titre = htmlspecialchars($row['titre']);
+                        $description = htmlspecialchars($row['description']);
+                        $prix = htmlspecialchars($row['prix']);
+                        $date_debut = htmlspecialchars($row['date_debut']);
+                        $date_fin = htmlspecialchars($row['date_fin']);
+                        $places_disponibles = htmlspecialchars($row['places_disponibles']);
+                        $type = htmlspecialchars($row['type']);
+
+                        echo " <tr class='hover:bg-gray-100'>
+                        <td class='text-center w-10 p-4'> <input type='checkbox' name='' id='' ></td>
+                        <td>&nbsp;$titre</td>
+                        <td>&nbsp;$description</td>
+                        <td>&nbsp;$prix</td>
+                        <td>&nbsp;$date_debut</td>
+                        <td>&nbsp;$date_fin</td>
+                        <td>&nbsp;$places_disponibles</td>
+                         <td>&nbsp;$type</td>
+
+
+                    <td>
+                        <div class='flex items-center gap-2 pl-2'>
+                        <a href='../../app/helpers/deleteActivite.php?id= ".$id."'><img class='h-4 w-4' src='./img/delete.png' alt=''></a>
+                      <button 
+                          class='edit-button' 
+                          data-id=' $id ' 
+                          data-titre=' $titre ' 
+                          data-description=' $description ' 
+                          data-prix=' $prix ' 
+                          data-date_debut=' $date_debut ' 
+                          data-date_fin=' $date_fin ' 
+                          data-type=' $type ' 
+                          data-places_disponibles=' $places_disponibles '>
+                          <img class='h-4 w-4' src='/GV2/public/admin/img/editinggh.png' alt='Edit'>
+                      </button>
+                        </div>
+                    </td>
+                    </tr> ";
+                   
+                    }
                     
-                    <label for="nom">First Name (Nom):</label><br>
-                    <input class="w3-input w3-border w3-round" type="text" id="nom" name="nom" required><br><br>
-
-                    <label for="prenom">Last Name (Prenom):</label><br>
-                    <input class="w3-input w3-border w3-round" type="text" id="prenom" name="prenom" required><br><br>
-
-                    <label for="email">Email:</label><br>
-                    <input class="w3-input w3-border w3-round" type="email" id="email" name="email" required><br><br>
-
-                    <label for="password">Password (mot de pass):</label><br>
-                    <input class="w3-input w3-border w3-round" type="tel" id="password" name="password" required><br><br>
-
-                    <label for="role">Select Admin role : </label>
-                    <select name="role" id="role">
-                        <option value="SuperAdmin">Super Admin</option>
-                        <option value="Admin">Admin</option>
-                    </select>
-
-                    <button type="submit" class="w3-btn w3-blue w3-round">Add Client</button>
-                </form>
-                
+                    ?>
+                    
+                 </table>
             </div>
-            <?php endif ?>
         </div>
     </div>
-    <div class="w3-half">
-        <div class="w3-container">
-            <h3>Create Event</h3>
-
-            <!-- Ktab Hna ach bghiti asat -->
-
-        </div>
-    </div>
-    <div class="w3-half">
-        <div class="w3-container">
-            <h3>Make a Reservation</h3>
-            
-            <!-- 7ta hna ktab ach bghiti db hado half which means 50% mn ay container kifma kan lwidth dyalo -->
-
-
-        </div>
-    </div>
-    <div class="w3-half">
-        <div class="w3-container">
-           
-                <!-- ta hada half mais ghaynzl lta7t 7it deja 100% tkhdat mn 9blo -->
-
-        </div>
-    </div>
+   
   </div>
 
   <hr>
@@ -156,8 +205,148 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
   <!-- End page content -->   
 </div>
-
+<div id="activityModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg transform h-[70%] overflow-y-auto scale-90 transition-transform">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Add Activity</h2>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <form id="addActivityForm" action="../../app/helpers/addActivite.php" method="POST" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium">Title</label>
+                    <input type="text" name="titre" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Description</label>
+                    <textarea name="description" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" rows="3" required></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Price</label>
+                    <input type="number" name="prix" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Start Date</label>
+                    <input type="date" name="dateDebut" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">End Date</label>
+                    <input type="date" name="dateFin" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Available Places</label>
+                    <input type="number" name="placesDisponibles" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Type</label>
+                    <select name="type" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+                        <option value="Vol">Vol</option>
+                        <option value="Circuit">Circuit</option>
+                        <option value="Hotel">Hotel</option>
+                    </select>
+                </div>
+                <button type="submit" name="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                    Save Activity
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg transform scale-90 transition-transform">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Edit Activity</h2>
+            <button id="closeEditModal" class="text-gray-400 hover:text-gray-600">&times;</button>
+        </div>
+        <form id="editActivityForm" action="../../app/helpers/editActivitie.php" method="POST" class="space-y-4">
+            <input type="hidden" name="id-edit" id="edit-id">
+            <div>
+                <label class="block text-sm font-medium">Title</label>
+                <input type="text" name="titre-edit" id="edit-titre" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Description</label>
+                <textarea name="description-edit" id="edit-description" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" rows="3" required></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Price</label>
+                <input type="text" name="prix-edit" id="edit-prix" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Start Date</label>
+                <input type="date" name="dateDebut-edit" id="edit-date_debut" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">End Date</label>
+                <input type="date" name="dateFin-edit" id="edit-date_fin" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Places Available</label>
+                <input type="number" name="placesDisponibles-edit" id="edit-places_disponibles" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+            </div>
+            <div>
+                    <label class="block text-sm font-medium">Type</label>
+                   <select name="type-edit" id="type-edit" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+                        <option value="Vol">Vol</option>
+                        <option value="Circuit">Circuit</option>
+                        <option value="Hotel">Hotel</option>
+                    </select> 
+                </div>
+            <button type="submit" name="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Save Changes</button>
+        </form>
+    </div>
+</div>
 <script>
+function openEditModal(id, titre, description, prix, dateDebut, dateFin, placesDisponibles,type) {
+    // Populate form fields with activity data
+    document.getElementById("edit-id").value = id;
+    document.getElementById("edit-titre").value = titre;
+    document.getElementById("edit-description").value = description;
+  
+    document.getElementById("type-edit").value = type.trim();
+    document.getElementById("edit-prix").value = parseFloat(prix).toFixed(2);
+    document.getElementById("edit-date_debut").value = new Date(dateDebut).toISOString().split('T')[0];
+    document.getElementById("edit-date_fin").value = new Date(dateFin).toISOString().split('T')[0];
+    document.getElementById("edit-places_disponibles").value = parseInt(placesDisponibles, 10);
+
+
+    // Show modal with animation
+    editModal.classList.remove("hidden");
+    setTimeout(() => editModal.classList.add("scale-100"));
+}
+
+// Close the modal
+closeEditModal.addEventListener("click", () => {
+    editModal.classList.add("hidden");
+    editModal.classList.remove("scale-100");
+});
+
+// Attach event listeners to edit buttons
+document.querySelectorAll(".edit-button").forEach(button => {
+    button.addEventListener("click", (event) => {
+        const { id, titre, description, prix, date_debut, date_fin, places_disponibles,type } = button.dataset;
+        openEditModal(id, titre, description, prix, date_debut, date_fin, places_disponibles,type);
+    });
+});
+
+   const addActivityBtn = document.getElementById('addActivityBtn');
+        const activityModal = document.getElementById('activityModal');
+        const closeModal = document.getElementById('closeModal');
+        const addActivityForm = document.getElementById('addActivityForm');
+
+        // Show Modal
+        addActivityBtn.addEventListener('click', () => {
+            activityModal.classList.remove('hidden');
+            setTimeout(() => {
+                activityModal.firstElementChild.classList.remove('scale-90');
+            }, 50);
+        });
+
+        // Hide Modal
+        closeModal.addEventListener('click', () => {
+            activityModal.firstElementChild.classList.add('scale-90');
+            setTimeout(() => {
+                activityModal.classList.add('hidden');
+            }, 200);
+        });
 // Get the Sidebar
 var mySidebar = document.getElementById("mySidebar");
 
