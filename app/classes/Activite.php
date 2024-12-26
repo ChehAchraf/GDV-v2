@@ -10,7 +10,8 @@ class Activite {
     private $placesDisponibles;
     private $type;
 
-    function __construct($titre, $description, $prix, $dateDebut, $dateFin, $placesDisponibles,$type) {
+    function __construct($id=null, $titre, $description, $prix, $dateDebut, $dateFin, $placesDisponibles,$type) {
+        $this->id = $id;
         $this->titre = $titre;
         $this->description = $description;
         $this->type = $type;
@@ -33,6 +34,7 @@ class Activite {
                 'places_disponibles' => $this->placesDisponibles,
                 'type'=> $this->type
             ]);
+
             return "Activity Added Successfully";
         } catch (Exception $e) {
             return "Couldn't Add Activity: " . $e->getMessage();
@@ -49,7 +51,7 @@ class Activite {
                                    `date_fin` = :date_fin,
                                    `places_disponibles` = :places_disponibles,
                                    `type` = :type
-                                   WHERE `id` = :id");
+                                   WHERE `id_activite` = :id");
             $stmt->execute([
                 'titre' => $this->titre,
                 'description' => $this->description,
@@ -97,7 +99,7 @@ class Activite {
 
     static function deleteActivite($pdo, $id) {
         try {
-            $stmt = $pdo->prepare("DELETE FROM `activites` WHERE `id` = :id");
+            $stmt = $pdo->prepare("DELETE FROM `activites` WHERE `id_activite` = :id");
             $stmt->execute(['id' => $id]);
             return "Activity Deleted Successfully";
         } catch (Exception $e) {

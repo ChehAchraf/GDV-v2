@@ -1,10 +1,18 @@
 <?php 
 require_once('../../app/classes/User.php');
+require_once('../../app/helpers/getAllReservations.php');
+require_once ('../../app/helpers/getActivite.php');
+require_once ('../../app/helpers/getUser.php');
+
+
 if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == "Admin" or $_SESSION['user_role'] == "SuperAdmin")){
     if(isset($_SESSION['added'])){
         echo $_SESSION['added'];
         unset($_SESSION['added']);
     }
+    $allReservations = getAllReservations::getAllReservations();
+    var_dump($allReservations);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,6 +23,13 @@ if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == "Admin" or $_SESS
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
@@ -68,86 +83,60 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
   </header>
 
-  <div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-quarter">
-      <div class="w3-container w3-red w3-padding-16">
-        <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
-        <div class="w3-right">
-          <h3></h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Events</h4>
-      </div>
-    </div>
-    <div class="w3-quarter">
-      <div class="w3-container w3-orange w3-text-white w3-padding-16">
-        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
-        <div class="w3-right">
-          <h3></h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Users</h4>
-      </div>
-    </div>
-  </div>
+ 
 
   <div class="w3-row-padding  w3-padding-16"> 
-    <div class="w3-half">
-        <div class="w3-container">
-            <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == "SuperAdmin"): ?>
-            <h3>Create Client</h3>
-            <div class="w3-card-4 w3-padding-32 w3-margin-top w3-round w3-container">
-                <form action="../../app/helpers/create_user.php" method="POST" >
+    <div class="">
+        <div class="w3-container w-full ">
+        <div>
+                <table class="w-full border rounded-lg" >
+                    <tr class="bg-gray-200 border-b  items-center ">
+                    <td class="text-center w-10 p-4 "> <input type="checkbox" name="" id=""></td>
+                      <td>&nbsp;Client Name</td>
+                      <td>&nbsp;Activity Title</td>
+                      <td>&nbsp;Date Reservation</td>
+                      <td>&nbsp;Status</td>
+                    </tr>
+                    <?php
+                      foreach ($allReservations as $row2)
+                      {
+                        $id = htmlspecialchars($row2['id_reservation']);
+                        $date_reservation = htmlspecialchars($row2['date_reservation']);
+                        $status = htmlspecialchars($row2['statut']);
+                        $act  = getActivite::getActiviteById($row2['id_activite']);
+                        $titleActivity = $act['titre'];
+                        $type = $act['type'];
+                        $user = getUser::getUserById($row2['id_client']);
+                        
+                        $nomClient = $user['nom'];
+                        $prenom = $user['prenom'];
+                        echo " <tr class='hover:bg-gray-100'>
+                        <td class='text-center w-10 p-4 '> <input type='checkbox' name='' id='' ></td>
+                        <td>&nbsp;$nomClient $prenom</td>
+                        <td>&nbsp;$titleActivity ($type)</td>
+                        <td>&nbsp;$date_reservation</td>
+                        <td >
+                            <form action='../../app/helpers/updateStatus.php' method='POST' class='flex items-center '>
+                                <input type='hidden' name='id_reservation' value='$id'>
+                                <select name='status_reservation' class='bg-transparent' onchange='this.form.submit()'>
+                                    <option value='En Attente' " . (($status == 'En Attente') ? 'selected' : '') . ">En Attente</option>
+                                    <option value='Confirmée' " . (($status == 'Confirmée') ? 'selected' : '') . ">Confirmée</option>
+                                    <option value='Annulée' " . (($status == 'Annulée') ? 'selected' : '') . ">Annulée</option>
+                                </select>
+                            </form>
+                        </td>
+
+                     ";
+                   
+                    }
                     
-                    <label for="nom">First Name (Nom):</label><br>
-                    <input class="w3-input w3-border w3-round" type="text" id="nom" name="nom" required><br><br>
-
-                    <label for="prenom">Last Name (Prenom):</label><br>
-                    <input class="w3-input w3-border w3-round" type="text" id="prenom" name="prenom" required><br><br>
-
-                    <label for="email">Email:</label><br>
-                    <input class="w3-input w3-border w3-round" type="email" id="email" name="email" required><br><br>
-
-                    <label for="password">Password (mot de pass):</label><br>
-                    <input class="w3-input w3-border w3-round" type="tel" id="password" name="password" required><br><br>
-
-                    <label for="role">Select Admin role : </label>
-                    <select name="role" id="role">
-                        <option value="SuperAdmin">Super Admin</option>
-                        <option value="Admin">Admin</option>
-                    </select>
-
-                    <button type="submit" class="w3-btn w3-blue w3-round">Add Client</button>
-                </form>
-                
+                    ?>
+                    
+                 </table>
             </div>
-            <?php endif ?>
         </div>
     </div>
-    <div class="w3-half">
-        <div class="w3-container">
-            <h3>Create Event</h3>
-
-            <!-- Ktab Hna ach bghiti asat -->
-
-        </div>
-    </div>
-    <div class="w3-half">
-        <div class="w3-container">
-            <h3>Make a Reservation</h3>
-            
-            <!-- 7ta hna ktab ach bghiti db hado half which means 50% mn ay container kifma kan lwidth dyalo -->
-
-
-        </div>
-    </div>
-    <div class="w3-half">
-        <div class="w3-container">
-           
-                <!-- ta hada half mais ghaynzl lta7t 7it deja 100% tkhdat mn 9blo -->
-
-        </div>
-    </div>
+   
   </div>
 
   <hr>

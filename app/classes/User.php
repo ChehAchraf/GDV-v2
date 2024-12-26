@@ -69,6 +69,26 @@ class User {
        
         return true;
     }
+    public static function getUserById($pdo,$id)
+    {
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM `utilisateurs` WHERE `id_utilisateur` = :idd");
+            $stmt->execute(['idd' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return "Couldn't Fetch Users: " . $e->getMessage();
+        }
+    }
+    public static function getAllUsers($pdo)
+    {
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM `utilisateurs`");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return "Couldn't Fetch Users: " . $e->getMessage();
+        }
+    }
 
 }
 ?>
