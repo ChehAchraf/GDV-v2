@@ -75,10 +75,10 @@ class Activite {
         }
     }
 
-    static function getActiviteById($pdo, $id) {
+    static function getActiviteById($pdo, $id_act) {
         try {
-            $stmt = $pdo->prepare("SELECT * FROM `activites` WHERE `id_activite` = :id");
-            $stmt->execute(['id' => $id]);
+            $stmt = $pdo->prepare("SELECT * FROM `activites` WHERE `id_activite` = :idd");
+            $stmt->execute(['idd' => $id_act]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             return "Couldn't Fetch Activity: " . $e->getMessage();

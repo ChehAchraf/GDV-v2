@@ -13,7 +13,9 @@ class getActivite {
     static function getActiviteById($id){
         $db  = new Database();
         $pdo = $db->getConnection();
+     
         $activite = Activite::getActiviteById($pdo,$id);
+   
         return $activite;
     }
     

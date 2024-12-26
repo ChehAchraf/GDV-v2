@@ -61,6 +61,7 @@ class User {
 
         return "Reservation made successfully";
     }
+   
     public static function logout(){
         unset($_SESSION['id']);
         unset($_SESSION['user_role']);

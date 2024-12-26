@@ -7,8 +7,8 @@ if(!isset($_SESSION['id']))
 {
     header('Location: /GV2/public/client/home.php');
 }
-
-$reservations = getAllReservations::getAllReservations();
+$logged_id=$_SESSION['id'];
+$reservations = getAllReservations::getMyReservations($logged_id);
 $allActivites = getActivite::getAllActivites();
 ?>
 
@@ -93,14 +93,15 @@ $allActivites = getActivite::getAllActivites();
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 ">
 
             	<?php
+
                     if($reservations)
                     {
+                       
                         $cmp = 1;
                         foreach($reservations as $res)
                         {
-                            $act = getActivite::getActiviteById( $res['id_activite']);
-                            
-                        echo "
+                            $act  = getActivite::getActiviteById($res['id_activite']);
+                            echo "
                      <div class='bg-white rounded-lg shadow-lg p-6'>
                                 <h3 class='text-xl font-bold text-primary mb-4'>Reservation $cmp</h3>
                                 <ul class='text-gray-700'>
@@ -131,6 +132,9 @@ $allActivites = getActivite::getAllActivites();
                             
                                         </div>        
                             </div>";
+                            
+                            
+                        
                         $cmp = $cmp+1;
                         }
 

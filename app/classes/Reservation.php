@@ -47,12 +47,20 @@ class Reservation {
         try {
             $stmt = $pdo->prepare("SELECT * FROM `reservations` WHERE `id_reservation` = :id");
             $stmt->execute(['id' => $id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $reservation ?: null;
         } catch (Exception $e) {
             return "Couldn't fetch reservation: " . $e->getMessage();
         }
     }
-
+    public static function getMyReservations($pdo,$id_Client) {
+        
+        $stmt = $pdo->prepare("SELECT * from reservations where id_client = :idclient");
+        $stmt->execute(['idclient' => $id_Client]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+       
+    }
     public function modifierReservation($pdo) {
         try {
             $stmt = $pdo->prepare("UPDATE `reservations` SET 
