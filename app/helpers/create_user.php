@@ -2,8 +2,9 @@
 require_once('../classes/User.php');
 require_once('../classes/SuperAdmin.php');
 require_once('../classes/Admin.php');
+require_once('../classes/DB.php');
 
-if($_SERVER['REQUEST_METHOD'] == "POST"){
+if($_SERVER['REQUEST_METHOD'] == "POST" && $_SESSION['user_role'] == "SuperAdmin"){
     if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['password']) && isset($_POST['email'])  && isset($_POST['role']) ){
       
         $nom = $_POST['nom'];
@@ -13,8 +14,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $role = $_POST['role'];
 
         switch($_SESSION['user_role']){
-            case 'Client':
-                echo "you are just a client";
+            case 'SuperAdmin':
+                $db  = new Database();
+                $pdo = $db->getConnection();
             break;
         }
 

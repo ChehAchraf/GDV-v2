@@ -26,7 +26,7 @@ class User {
             $_SESSION['user_role'] = $user['role'];
             return "Login successful! Welcome, " . $user['nom'] . " and the session role is " . $_SESSION['user_role'];
         }
-        return "Invalid username or password";
+        return null;
     }
     public function GetSession($param){
         return $_SESSION[$param];

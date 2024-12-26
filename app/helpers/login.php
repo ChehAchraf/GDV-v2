@@ -15,12 +15,17 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $db  = new Database();
         $pdo = $db->getConnection();
         $user = new User('', '', $password, $email); 
-   
+        $result = $user->login($pdo);
         
-        // if($result){
-           
-        //     header("Location: ../../public/admin/index.php");
-        // }
+        if($result){
+            if($_SESSION['user_role'] == "SuperAdmin" or $_SESSION['user_role'] == "Admin" ){
+            header("Location: ../../public/admin/index.php");
+            }else{
+                header("Location: ../../public/client/home.php");
+            }
+        }else{
+            echo "Invalid User name or Password";
+        }
         
 
         
