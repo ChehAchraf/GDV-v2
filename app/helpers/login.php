@@ -15,11 +15,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $db  = new Database();
         $pdo = $db->getConnection();
         $user = new User('', '', $password, $email); 
-        $result = $user->login($pdo);
-        if($result){
+   
+        
+        // if($result){
            
-            header("Location: ../../public/admin/index.php");
-        }
+        //     header("Location: ../../public/admin/index.php");
+        // }
         
 
         

@@ -1,4 +1,8 @@
-
+<?php 
+require_once('../../app/classes/User.php');
+if(isset($_SESSION['user_role'])){
+    echo "yes";
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,7 +94,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <div class="w3-container">
             <h3>Create Client</h3>
             <div class="w3-card-4 w3-padding-32 w3-margin-top w3-round w3-container">
-                <form action="../inc/add_client.php" method="POST" 
+                <form action="../../app/helpers/create_user.php" method="POST" >
                     
                     <label for="nom">First Name (Nom):</label><br>
                     <input class="w3-input w3-border w3-round" type="text" id="nom" name="nom" required><br><br>
@@ -101,14 +105,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
                     <label for="email">Email:</label><br>
                     <input class="w3-input w3-border w3-round" type="email" id="email" name="email" required><br><br>
 
-                    <label for="telephone">Phone (Telephone):</label><br>
-                    <input class="w3-input w3-border w3-round" type="tel" id="telephone" name="telephone" required><br><br>
+                    <label for="password">Password (mot de pass):</label><br>
+                    <input class="w3-input w3-border w3-round" type="tel" id="password" name="password" required><br><br>
 
-                    <label for="adresse">Address (Adresse):</label><br>
-                    <textarea class="w3-input w3-border w3-round" id="adresse" name="adresse" rows="4" required></textarea><br><br>
-
-                    <label for="date_naissance">Date of Birth (Date de Naissance):</label><br>
-                    <input class="w3-input w3-border w3-round" type="date" id="date_naissance" name="date_naissance" required><br><br>
+                    <label for="role">Select Admin role : </label>
+                    <select name="role" id="role">
+                        <option value="SuperAdmin">Super Admin</option>
+                        <option value="Admin">Admin</option>
+                    </select>
 
                     <button type="submit" class="w3-btn w3-blue w3-round">Add Client</button>
                 </form>
@@ -290,3 +294,6 @@ function w3_close() {
   <script src="../js/main.js"></script>
 </body>
 </html>
+<?php }else{
+    echo "acces dienied";
+}?>

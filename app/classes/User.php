@@ -1,4 +1,5 @@
 <?php
+session_start();
 class User {
     protected $id;
     protected $nom;
@@ -21,18 +22,19 @@ class User {
         $user = $stmt->fetch();
 
         if ($user && password_verify($this->password, $user['mot_de_passe'])) {
-            session_start();
-            
             $_SESSION['id'] = $user['id_utilisateur'];
             $_SESSION['user_role'] = $user['role'];
             return "Login successful! Welcome, " . $user['nom'] . " and the session role is " . $_SESSION['user_role'];
         }
         return "Invalid username or password";
     }
+    public function GetSession($param){
+        return $_SESSION[$param];
+    }
 
     public function register($pdo) {
-        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE nom = :nom AND prenom = :prenom");
-        $stmt->execute(['nom' => $this->nom, 'prenom' => $this->prenom]);
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE nom = :nom AND mot_de_pass = :password");
+        $stmt->execute(['nom' => $this->nom, 'prenom' => $this->email]);
         $user = $stmt->fetch();
 
         if ($user) {
@@ -57,5 +59,6 @@ class User {
 
         return "Reservation made successfully";
     }
+
 }
 ?>
