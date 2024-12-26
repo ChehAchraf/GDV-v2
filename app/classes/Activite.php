@@ -77,7 +77,7 @@ class Activite {
 
     static function getActiviteById($pdo, $id) {
         try {
-            $stmt = $pdo->prepare("SELECT * FROM `activites` WHERE `id` = :id");
+            $stmt = $pdo->prepare("SELECT * FROM `activites` WHERE `id_activite` = :id");
             $stmt->execute(['id' => $id]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
@@ -104,6 +104,7 @@ class Activite {
             return "Couldn't Delete Activity: " . $e->getMessage();
         }
     }
+   
 }
 
 ?>
