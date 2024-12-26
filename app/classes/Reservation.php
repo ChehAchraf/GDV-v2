@@ -8,12 +8,15 @@ class Reservation {
     private $nbrPersonnes;
     private $statut;
 
-    public function __construct($idClient, $idActivite, $nbrPersonnes,$statut = 'En Attente') {
+    public function __construct($idReservation=null,$idClient=null, $idActivite, $nbrPersonnes,$statut = 'En Attente') {
+        $this->idReservation = $idReservation;
         $this->idClient = $idClient;
         $this->idActivite = $idActivite;
         $this->statut = $statut;
         $this->nbrPersonnes = $nbrPersonnes;
     }
+   
+
 
     public function creerReservation($pdo) {
         try {
@@ -53,15 +56,15 @@ class Reservation {
     public function modifierReservation($pdo) {
         try {
             $stmt = $pdo->prepare("UPDATE `reservations` SET 
-                                    `id_client` = :idClient, 
+                                    
                                     `id_activite` = :idActivite, 
-                                    `statut` = :statut,
+                                
                                     `nbr_personne` = :nbr_personne
                                     WHERE `id_reservation` = :idReservation");
             $stmt->execute([
-                'idClient' => $this->idClient,
+              
                 'idActivite' => $this->idActivite,
-                'statut' => $this->statut,
+               
                 'nbr_personne' => $this->nbrPersonnes,
                 'idReservation' => $this->idReservation
             ]);
@@ -80,6 +83,26 @@ class Reservation {
             return "Couldn't delete reservation: " . $e->getMessage();
         }
     }
+    public  function annulerReservation($pdo) {
+        try {
+           
+            $stmt = $pdo->prepare("UPDATE `reservations` SET        
+                                    `statut` = :statut
+                                    WHERE `id_reservation` = :id");
+            $stmt->execute([
+                'statut' => $this->statut,
+                'id' => $this->idReservation
+            ]);
+            return "Reservation updated successfully.";
+        } catch (Exception $e) {
+            return "Couldn't update reservation: " . $e->getMessage();
+        }
+        
+    }
+    public function __tostring(){
+        return "mon statut est: ".$this->statut;
+    }
+
 }
 
 ?>
