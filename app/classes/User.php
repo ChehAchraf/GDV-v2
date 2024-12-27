@@ -30,9 +30,6 @@ class User {
         }
         return null;
     }
-    public function GetSession($param){
-        return $_SESSION[$param];
-    }
 
     public function register($pdo) {
         $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email ");
