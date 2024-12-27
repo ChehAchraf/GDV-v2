@@ -23,9 +23,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             header("Location: ../../public/client/reservation.php");
         }
         
-
-        
-
     }else{
         echo "Please enter any data";
     }
