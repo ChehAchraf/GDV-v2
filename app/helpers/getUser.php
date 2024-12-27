@@ -8,7 +8,7 @@ class getUser {
         $db  = new Database();
         $pdo = $db->getConnection();
         $users = User::getAllUsers($pdo);
-        return $userss;
+        return $users;
     }
     static function getUserById($id){
         $db  = new Database();

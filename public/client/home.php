@@ -99,32 +99,14 @@ session_start();
         </div>
         <p class="text-[40px]">Most Visited <span class="text-primary font-bold">Destination</span></p>
         <div class="flex h-[100%] md:gap-8">
-            <div class="flex flex-col gap-4 justufy-around h-auto h-[100%] w-[100%] md:w-[50%]">
-                    <?php
-                    $cmp = 0;
-                    foreach($allMenu as $menu){
-                        echo "<div class='p-2 flex flex-col gap-2 border-t-2 border-b-2 w-full hover:border-primary hover:border-t-4 hover:border-b-4'>
-                        <div class='flex justify-between'>
-                        <p>" .$menu['titre'] ."</p>
-                        <p class='text-primary text-xl '>" .$menu['prix'] ."$</p>
-                        </div>
-                        ";
-                        $allPlat = $con->query("SELECT * from plat inner join menu_plat on menu_plat.id_plat = plat.id inner join menu on menu_plat.id_menu = menu.id where menu.id = ".$menu['id']."");
-                        $plats = [];
-                        foreach ($allPlat as $plat) {
-                            $plats[] = $plat['titre_plat']; // Collect the plat names in an array
-                        }
-                    
-                        echo "<p>" . implode(", ", $plats) . "</p>"; // Join plat names with a comma and space
-                    
-                        echo "</div>";
-                    
-                        $cmp++;
-                        if ($cmp == 6) {
-                            break;
-                        }
-                    }
-                    ?>
+            <div  class="flex flex-col gap-4 justify-center items-center h-[100%] w-[100%] md:w-[50%]">
+                   
+                   <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium hic ut fuga tempora, at repellendus excepturi, laborum error nulla harum nostrum ullam ipsa repellat, rem commodi eius distinctio quis. Blanditiis!
+                   Consectetur quidem expedita fuga cum rem! Dignissimos, aperiam! In iusto numquam sit quidem consectetur beatae? Quisquam fuga nulla error porro commodi quaerat sed earum dolorem dolor. Aut debitis itaque corrupti.
+                   Et modi quo repellat iusto voluptatibus perspiciatis, ab veniam aliquid maxime quaerat nisi officia nam nulla sit, accusantium eos ipsum quos nihil, aliquam commodi reiciendis. Recusandae iusto repudiandae officia suscipit.
+                   Laudantium sit harum sunt explicabo sapiente beatae delectus quae atque accusantium neque tempora corrupti consectetur eum eligendi quo veniam veritatis quas, dolorem ex blanditiis porro aliquid adipisci. Repellendus, eum dolor.
+                   Sapiente quos eum soluta accusantium sint. Ratione incidunt quas aperiam. Beatae hic unde sequi nemo ab nam, at culpa voluptatem cupiditate amet? Accusamus quae asperiores corporis nam perspiciatis architecto quo?
+                   Officia sed deleniti unde minus porro nisi amet repudiandae distinctio iusto impedit vero deserunt maxime blanditiis molestias repellat, similique veritatis eos totam debitis soluta ipsa inventore dolorem? Sint, laudantium eveniet!</p>
                     
                     
                     

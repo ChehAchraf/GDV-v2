@@ -12,16 +12,22 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         }
         $db  = new Database();
         $pdo = $db->getConnection();
-        $user = new User('', '', $password, $email); 
+        $user = new User(null,'', '', $password, $email); 
         $result = $user->login($pdo);
+   
+        if($result == 202){
         
-        if($result){
             if($_SESSION['user_role'] == "SuperAdmin" or $_SESSION['user_role'] == "Admin" ){
             header("Location: ../../public/admin/index.php");
             }else{
                 header("Location: ../../public/client/home.php");
             }
-        }else{
+        
+        }else if($result == 404) {
+            $_SESSION['error'] = 'This User is banned!!';
+            header('Location: ../../public');
+        }
+        else {
             echo "Invalid User name or Password";
         }
         
@@ -29,6 +35,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         
 
     }else{
-        echo "Please enter any data";
+        header('Location: ../../public');
     }
+   
 }

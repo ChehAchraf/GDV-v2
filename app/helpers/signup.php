@@ -17,7 +17,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $db  = new Database();
         $pdo = $db->getConnection();
 
-        $user1 = new User($firstName,$lastName,$password,$email);
+        $user1 = new User(null,$firstName,$lastName,$password,$email);
         $res = $user1->register($pdo);
      
         if($res)
