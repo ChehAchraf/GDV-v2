@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_SESSION['user_role'])) {
 
         // Check permissions based on current user's role
         if ($userRole === "SuperAdmin") {
-            $superAdmin = new SuperAdmin("superAdminName", "superAdminSurname", "superAdminPassword123", "superAdmin@example.com");
+            $superAdmin = new SuperAdmin(null,"superAdminName", "superAdminSurname", "superAdminPassword123", "superAdmin@example.com");
 
             if ($role === "SuperAdmin") {
                 $result = $superAdmin->createSuperAdmin($pdo, $nom, $prenom, $password, $email);
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_SESSION['user_role'])) {
             }
         } elseif ($userRole === "Admin") {
             if ($role === "Admin") {
-                $admin = new Admin("adminName", "adminSurname", "adminPassword123", "admin@example.com");
+                $admin = new Admin(null,"adminName", "adminSurname", "adminPassword123", "admin@example.com");
                 $result = $admin->createAdmin($pdo, $nom, $prenom, $password, $email);
             } else {
                 echo "Error: You do not have permission to create a SuperAdmin.";

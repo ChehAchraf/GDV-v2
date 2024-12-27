@@ -7,8 +7,16 @@ class User {
     protected $password;
     protected $email;
     protected $role;
+    protected $bannir;
+    
+    public function setBan($bannir)
+    {
+      
+        $this->bannir = $bannir;
+    }
 
-    public function __construct($nom, $prenom, $password,$email, $role = 'client') {
+    public function __construct($id=null,$nom, $prenom, $password,$email, $role = 'client') {
+        $this->id = $id;
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->password = $password;
@@ -16,7 +24,7 @@ class User {
         $this->role = $role;
     }
     function __tostring(){
-        return 'mon nom est '.$this->nom. ' mon email est '.$this->email;
+        return 'mon id est '.$this->id. ' mon email est '.$this->bannir;
     }
     public function login($pdo) {
         $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email ");
@@ -24,9 +32,16 @@ class User {
         $user = $stmt->fetch();
 
         if ($user && password_verify($this->password, $user['mot_de_passe'])) {
-            $_SESSION['id'] = $user['id_utilisateur'];
-            $_SESSION['user_role'] = $user['role'];
-            return "Login successful! Welcome, " . $user['nom'] . " and the session role is " . $_SESSION['user_role'];
+            if($user['banned'] == true)
+            {
+                return 404;
+            }else {
+                $_SESSION['id'] = $user['id_utilisateur'];
+                $_SESSION['user_role'] = $user['role'];
+                
+                return 202;
+            }
+      
         }
         return null;
     }
@@ -87,6 +102,22 @@ class User {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             return "Couldn't Fetch Users: " . $e->getMessage();
+        }
+    }
+    public  function banUnbanUser($pdo)
+    {
+        try {
+        
+            $stmt = $pdo->prepare("UPDATE `utilisateurs` SET        
+                                    `banned` = :bannir
+                                    WHERE `id_utilisateur` = :id");
+            $stmt->execute([
+                'bannir' => $this->bannir,
+                'id' => $this->id
+            ]);
+            return "Reservation updated successfully.";
+        } catch (Exception $e) {
+            return "Couldn't update reservation: " . $e->getMessage();
         }
     }
 
