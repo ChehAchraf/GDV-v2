@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once('../../app/classes/User.php');
+require_once('../../app/helpers/getActivite.php');
+$allActivites = getActivite::getAllActivites();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,53 +73,25 @@ session_start();
         <h1 class="text-[50px] ">Our <span class='text-primary font-bold'>Menu</span></h1>
     
         <div class="flex flex-wrap h-[100%] w-[100%] justify-around gap-8 pt-8">
-           <?php
-            foreach($allMenu as $menu){
-                $allPlat = $con->query("SELECT * from plat inner join menu_plat on menu_plat.id_plat = plat.id inner join menu on menu_plat.id_menu = menu.id where menu.id = ".$menu['id']."");
-                echo " <div class='p-2 flex flex-col gap-2  w-[40%] h-full'>
-                <div>
-                    <div class='flex justify-center  '>
-                        <p
-                            class='border-t-2 border-r-2 border-l-2 px-2 flex text-center py-1 hover:border-primary hover:border-t-2 hover:border-r-2 hover:border-l-2'>
-                            ".$menu['titre']." : ".$menu['prix']."$</p>
-                    </div>
-                    <div
-                        class='border-t-2 flex flex-col border-b-2 hover:border-primary hover:border-t-2 hover:border-b-2 font-secondary '>
-                        ";
-                        foreach($allPlat as $plat)
-                        {
-                            $query = "SELECT * FROM image WHERE id = " . $plat['id_image'];
-                            $result2 = $con->query($query);
-                        
-                            if ($result2 && $result2->num_rows > 0) {
-                                $imageData = $result2->fetch_assoc();
-                                $image = $imageData['data']; 
-                                $imageType = $imageData['type']; 
-                        
-                               
-                                $base64Image = base64_encode($image);
-                                $imageSrc = "data:$imageType;base64,$base64Image";
-                            } 
-                        
-                        echo "
-                        <div class='flex flex-col py-2 md:flex-row'>
-                            <div class='w-[100%] md:w-[70%] flex flex-col items-center h-full '>
-                                <p><span class='text-gray-500 font-primary'>Plat:</span> {$plat['titre_plat']}</p>
-                                <h3><span class='text-gray-500 font-primary'>Categorie:&nbsp;</span>{$plat['categorie']}</h3>
-                            </div>
-                            <div class='w-[100%] md:w-[30%]'>
-                                <img class='h-20 w-full' src='$imageSrc' alt='Dish image'>
-                            </div>
-                        </div>";
-                    }
-                        echo "
-
+        <div class="container mx-auto p-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <?php foreach ($allActivites as $activite): ?>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <!-- Placeholder image, replace with your own image field if available -->
+                    <img src="../image/static.jpg" alt="Activity Image" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800"><?php echo htmlspecialchars($activite['titre']); ?></h3>
+                        <p class="text-gray-600 mt-2"><?php echo htmlspecialchars($activite['description']); ?></p>
+                        <p class="mt-4 text-gray-800"><strong>Price:</strong> $<?php echo number_format($activite['prix'], 2); ?></p>
+                        <p class="mt-1 text-gray-600"><strong>Available Spots:</strong> <?php echo $activite['places_disponibles']; ?></p>
+                        <p class="mt-1 text-gray-600"><strong>Type:</strong> <?php echo $activite['type']; ?></p>
+                        <p class="mt-1 text-gray-600"><strong>Start Date:</strong> <?php echo date("F j, Y", strtotime($activite['date_debut'])); ?></p>
+                        <p class="mt-1 text-gray-600"><strong>End Date:</strong> <?php echo date("F j, Y", strtotime($activite['date_fin'])); ?></p>
                     </div>
                 </div>
-            </div>";
-            }
-           ?>
-
+            <?php endforeach; ?>
+        </div>
+    </div>
         </div>
         </div>
 
